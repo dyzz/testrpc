@@ -8,22 +8,24 @@ var Web3 = require("web3");
 var web3 = new Web3(); // Used only for its BigNumber library.
 
 function parseAccounts(accounts) {
-  function splitAccount(account) {
+  function splitAccount(index, account) {
     account = account.split(',')
     return {
+      index: index,
       secretKey: account[0],
       balance: account[1]
     };
   }
 
-  if (typeof accounts === 'string')
-    return [ splitAccount(accounts) ];
-  else if (!Array.isArray(accounts))
+  if (typeof accounts === 'string') {
+    return [splitAccount(0, accounts)];
+  } else if (!Array.isArray(accounts)) {
     return;
+  }
 
   var ret = []
   for (var i = 0; i < accounts.length; i++) {
-    ret.push(splitAccount(accounts[i]));
+    ret.push(splitAccount(i, accounts[i]));
   }
   return ret;
 }
